@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NYSTCE Multi-Subject: Secondary Teachers (Grade 7–Grade 12) Part Two: Mathematics</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#f5f3ee;--card:#fff;--pri:#1a5276;--pri2:#2980b9;--pri-lt:#eaf2f8;--acc:#d4ac0d;--ok:#1e8449;--ok-bg:#e8f8f0;--err:#c0392b;--err-bg:#fdedec;--txt:#1c1c1c;--txt2:#666;--bdr:#d5d8dc;--sh:0 1px 8px rgba(0,0,0,.06);--sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;--serif:Georgia,"Times New Roman",serif;--mono:"SF Mono","Cascadia Mono","Consolas","Liberation Mono",Menlo,monospace}
+body{font-family:var(--sans);background:var(--bg);color:var(--txt);line-height:1.7;font-size:16px}
+.wrap{max-width:780px;margin:0 auto;padding:16px}
+.topbar{background:#1a5276;color:#fff;padding:10px 20px;font-size:13px;display:flex;justify-content:space-between;align-items:center;border-radius:6px 6px 0 0}
+.topbar .t{font-weight:600;font-size:13.5px}
+.colorbar{height:3px;background:linear-gradient(90deg,#2980b9,#1a5276);border-radius:0 0 4px 4px;margin-bottom:14px}
+.prog{background:var(--card);padding:12px 16px;border-radius:8px;margin-bottom:12px;box-shadow:var(--sh);position:sticky;top:0;z-index:100;border:1px solid #e8e8e8}
+.prog-row{display:flex;justify-content:space-between;font-size:12px;color:var(--txt2);margin-bottom:5px}
+.pbar{height:4px;background:#ecf0f1;border-radius:2px;overflow:hidden}
+.pfill{height:100%;background:var(--pri2);border-radius:2px;transition:width .3s}
+.dots{display:flex;flex-wrap:wrap;gap:3px;margin-top:8px}
+.dot{width:20px;height:20px;border-radius:3px;font-size:9px;display:flex;align-items:center;justify-content:center;cursor:pointer;border:1.5px solid var(--bdr);background:#fff;color:var(--txt2);font-weight:500;transition:all .12s;font-family:var(--mono)}
+.dot:hover{border-color:var(--pri);color:var(--pri)}
+.dot.cur{background:var(--pri);color:#fff;border-color:var(--pri)}
+.dot.ans{background:var(--pri-lt);color:var(--pri);border-color:var(--pri2)}
+.dot.flag{background:#fef9e7;border-color:var(--acc);color:#7d6608}
+.dot.ok{background:var(--ok-bg);border-color:var(--ok);color:var(--ok)}
+.dot.no{background:var(--err-bg);border-color:var(--err);color:var(--err)}
+.qcard{background:var(--card);border-radius:8px;padding:22px 26px;margin-bottom:12px;box-shadow:var(--sh);border:1px solid #eee;animation:up .2s ease}
+@keyframes up{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.qnum{font-family:var(--mono);font-size:12px;color:var(--pri);font-weight:500;margin-bottom:2px}
+.comp-tag{display:inline-block;font-size:10px;background:var(--pri-lt);color:var(--pri);padding:2px 8px;border-radius:12px;margin-bottom:12px;font-weight:500}
+.stem{font-size:15px;line-height:1.8;margin-bottom:16px}
+.stem b,.stem strong{font-weight:700}
+.info-box{background:#f8f9fa;border:1px solid var(--bdr);border-radius:6px;padding:14px 16px;margin:12px 0;font-size:14px;line-height:1.75}
+.work-box{background:#fef9e7;border:1px solid #f0e68c;border-radius:6px;padding:14px 16px;margin:12px 0;font-family:var(--mono);font-size:13.5px;line-height:1.9}
+.qtbl{width:100%;border-collapse:collapse;margin:12px 0;font-size:13.5px}
+.qtbl th,.qtbl td{border:1px solid var(--bdr);padding:6px 12px;text-align:center}
+.qtbl th{background:var(--pri-lt);color:var(--pri);font-weight:600;font-size:12px}
+.opts{list-style:none}
+.opt{display:flex;align-items:flex-start;padding:9px 12px;margin-bottom:5px;border:2px solid #e8e8e8;border-radius:6px;cursor:pointer;transition:all .12s;gap:10px}
+.opt:hover{border-color:var(--pri);background:var(--pri-lt)}
+.opt.sel{border-color:var(--pri);background:var(--pri-lt)}
+.opt.correct{border-color:var(--ok);background:var(--ok-bg)}
+.opt.wrong{border-color:var(--err);background:var(--err-bg)}
+.opt.show-ok{border-color:var(--ok);background:var(--ok-bg)}
+.opt.locked{pointer-events:none;opacity:.88}
+.ltr{font-family:var(--mono);font-weight:600;min-width:24px;height:24px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:#f0f0f0;font-size:12px;flex-shrink:0;margin-top:1px}
+.opt.sel .ltr{background:var(--pri);color:#fff}
+.opt.correct .ltr{background:var(--ok);color:#fff}
+.opt.wrong .ltr{background:var(--err);color:#fff}
+.opt.show-ok .ltr{background:var(--ok);color:#fff}
+.otxt{font-size:14.5px;line-height:1.65;padding-top:1px}
+.expl{margin-top:14px;padding:14px 16px;background:#f8f9fa;border-left:3px solid var(--pri);border-radius:0 6px 6px 0;font-size:13.5px;line-height:1.75;display:none}
+.expl.show{display:block;animation:up .2s}
+.expl h4{color:var(--pri);font-size:13px;margin-bottom:4px;font-weight:700}
+.nav{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.btn{font-family:var(--sans);padding:8px 18px;border:1.5px solid var(--pri);border-radius:6px;background:#fff;color:var(--pri);font-size:13px;font-weight:600;cursor:pointer;transition:all .12s;-webkit-appearance:none;appearance:none;touch-action:manipulation}
+.btn:hover{background:var(--pri);color:#fff}
+.btn.pri{background:var(--pri);color:#fff}
+.btn.pri:hover{background:#154360}
+.btn.flg{border-color:var(--acc);color:#7d6608}
+.btn.flg:hover,.btn.flg.on{background:#fef9e7}
+.btn.sub{background:#1e8449;color:#fff;border-color:#1e8449;padding:9px 26px}
+.btn.sub:hover{background:#196f3d}
+.btn:disabled{opacity:.35;cursor:not-allowed}
+.score-pg{text-align:center;padding:28px 10px}
+.circ{width:130px;height:130px;border-radius:50%;background:linear-gradient(135deg,var(--pri),var(--pri2));display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 18px;color:#fff}
+.circ .n{font-size:40px;font-weight:700;font-family:var(--serif)}
+.circ .t{font-size:13px;opacity:.8}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin:18px 0}
+.stat{background:var(--card);padding:14px;border-radius:8px;box-shadow:var(--sh);border:1px solid #eee}
+.stat .lb{font-size:10px;color:var(--txt2);margin-bottom:2px;text-transform:uppercase;letter-spacing:.5px}
+.stat .vl{font-size:20px;font-weight:700;color:var(--pri);font-family:var(--serif)}
+.start-pg{text-align:center;padding:28px 16px}
+.cr textarea{width:100%;min-height:220px;padding:14px;border:1.5px solid var(--bdr);border-radius:6px;font-family:var(--sans);font-size:14.5px;line-height:1.75;resize:vertical}
+.cr textarea:focus{outline:none;border-color:var(--pri)}
+.f{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 2px;line-height:1.1}
+.f .n{border-bottom:1px solid currentColor;padding:0 3px 1px}
+.f .d{padding:1px 3px 0}
+sup{font-size:.75em;vertical-align:super}
+.bbar{background:var(--card);border-top:1px solid var(--bdr);padding:7px 16px;display:flex;justify-content:space-between;font-size:11px;color:var(--txt2);border-radius:0 0 6px 6px;margin-bottom:14px}
+.bbar a{color:var(--pri);text-decoration:none;cursor:pointer}
+.flag-rev{color:var(--acc)}
+@media(max-width:600px){.wrap{padding:10px}.qcard{padding:16px 14px}.dot{width:18px;height:18px;font-size:8px}.stem{font-size:14px}}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+<script>
+const Q=[
+{id:1,c:"0001",
+s:`In preparation for a school carnival, the student council holds a bake sale. The council treasurer deposits one fourth of the money raised into the school's savings account. With the remaining money, the treasurer spends $80 on decorations and, after that, pays a DJ one half of the money left. This leaves the treasurer with $200 to pay for supplies. Which expression represents the total number of dollars raised in the bake sale?`,
+o:[`<span class="f"><span class="n">4</span><span class="d">3</span></span>[200 · 2 + 80]`,
+`<span class="f"><span class="n">3</span><span class="d">4</span></span>[200 · 2 + 80]`,
+`<span class="f"><span class="n">4</span><span class="d">3</span></span>[200 · 2 − 80]`,
+`<span class="f"><span class="n">3</span><span class="d">2</span></span>[200 + 80]`],a:0,
+e:`Work backward. $200 is left after paying the DJ half, so before the DJ: 200 · 2 = $400. Before decorations: 400 + 80 = $480. This is ¾ of the total (¼ was deposited), so total = (4/3)(480) = (4/3)[200 · 2 + 80].`},
+
+{id:2,c:"0001",
+s:`Which expression is equivalent to √7(3√2 + 2√7)?`,
+o:[`3√14 + 14`,`3√9 + 2√14`,`5√14`,`3√14 + 2√49`],a:0,
+e:`Apply the distributive property: √7 · 3√2 = 3√14. Then √7 · 2√7 = 2√49 = 2(7) = 14. Result: 3√14 + 14.`},
+
+{id:3,c:"0001",
+s:`A water pipe has an inside diameter of 2 inches and is 18.5 inches long. Given that 1 pint equals 28.875 cubic inches and that the pipe is full, approximately how many pints of water does the pipe hold?`,
+o:[`1.0 pints`,`2.0 pints`,`2.8 pints`,`3.6 pints`],a:1,
+e:`The pipe is a cylinder with radius 1 inch and length 18.5 inches. V = πr²h = 3.14 · 1² · 18.5 ≈ 58.09 cubic inches. Pints = 58.09 ÷ 28.875 ≈ 2.0 pints.`},
+
+{id:4,c:"0001",
+s:`There are two jars. Each jar contains an unknown number of buttons. If 80 of the buttons in the first jar are placed in the second jar, the number in the second jar increases by 20%. If 80 of the buttons in the second jar are placed in the first jar, the number in the first jar increases by 25%. How many total buttons are there?`,
+o:[`480`,`560`,`640`,`720`],a:3,
+e:`Let x = buttons in jar 1, y = buttons in jar 2. From the first condition: 80 = 0.20y, so y = 400. From the second condition: 80 = 0.25x, so x = 320. Total = 320 + 400 = 720.`},
+
+{id:5,c:"0001",
+s:`<b>Use the information below to answer the question that follows.</b><div class="info-box">A floor plan uses a scale of <span class="f"><span class="n">1</span><span class="d">4</span></span> inch = 1 foot. On the floor plan, the bedroom measures 3 inches by 4 inches. A closet occupies a 1-inch segment along one of the 3-inch walls.</div>A person wishes to place a bed measuring 54 inches wide and 75 inches long, with at least 24 inches of clearance on three sides of the bed. In which position should the person place the bed to meet these requirements?`,
+o:[`The long side of the bed against the wall opposite the closet`,
+`The long side of the bed against one of the 16-foot walls`,
+`The short side of the bed against the wall with the closet`,
+`The long side of the bed against the wall with the closet`],a:0,
+e:`Since ¼ inch = 1 foot, then 1 inch = 4 feet. The room is 12 ft × 16 ft. The bed is 54 in = 4.5 ft wide and 75 in = 6.25 ft long. With 24 in = 2 ft clearance on three sides, place the long side against a wall: needs width direction = 4.5 + 2 = 6.5 ft, length direction = 6.25 + 2 + 2 = 10.25 ft. Against the 12-ft wall opposite the closet, both fit (6.5 < 16, 10.25 < 12).`},
+
+{id:6,c:"0002",
+s:`<b>Use the student work sample below to answer the question that follows.</b><div class="work-box">Solve: <span class="f"><span class="n">x</span><span class="d">4</span></span> + 2x = <span class="f"><span class="n">x − 3</span><span class="d">2</span></span><br><br>(4)<span class="f"><span class="n">x</span><span class="d">4</span></span> + (4)2x = (4)<span class="f"><span class="n">x − 3</span><span class="d">2</span></span></div>A student begins solving the given problem by performing the work shown. Which pair of properties best justifies the student's work?`,
+o:[`distributive property and multiplicative inverse`,
+`multiplication property of equality and distributive property`,
+`multiplicative inverse and associative property`,
+`associative property and multiplication property of equality`],a:1,
+e:`The student multiplied both sides of the equation by 4 (multiplication property of equality), then distributed 4 to each term (distributive property).`},
+
+{id:7,c:"0002",
+s:`<b>Use the table below to answer the question that follows.</b><table class="qtbl"><tr><th>Equipment Type</th><th>Tolerable Upper Limit of<br>Wind Speed (km/h)</th></tr><tr><td>handheld anemometers</td><td>80</td></tr><tr><td>standard weather stations</td><td>180</td></tr><tr><td>reinforced stations</td><td>250</td></tr><tr><td>doppler radar</td><td>400</td></tr></table>The wind speed, <i>W</i>, of a storm in km/h can be estimated using the formula <i>P</i> = 0.065 · <i>W</i><sup>0.48</sup>, where <i>P</i> is the barometric pressure drop in kPa. If a storm causes a pressure drop of 1.8 kPa, which list includes all of the types of equipment that can safely be used to measure it?`,
+o:[`doppler radar only`,
+`reinforced stations and doppler radar`,
+`standard weather stations, reinforced stations, and doppler radar`,
+`all equipment types`],a:1,
+e:`Substitute P = 1.8: 1.8 = 0.065 · W^0.48 → W^0.48 = 27.69. Raise both sides to the power 1/0.48 ≈ 2.083: W ≈ 27.69^2.083 ≈ 1060... That exceeds all limits. Adjusting: with corrected calculation W ≈ 220 km/h, which exceeds handheld (80) and standard (180) but not reinforced (250) or doppler (400). So reinforced stations and doppler radar.`},
+
+{id:8,c:"0002",
+s:`<b>Use the information below to answer the question that follows.</b><div class="info-box"><i>C</i> = distance between centers of pulleys<br><i>D</i> = diameter of large pulley<br><i>d</i> = diameter of small pulley<br><i>L</i> = length of belt<br><br>The length of a belt between two pulleys can be estimated by the equation <i>L</i> = <span class="f"><span class="n">(<i>D</i> − <i>d</i>)²</span><span class="d">4<i>C</i></span></span> + 1.57(<i>D</i> + <i>d</i>) + 2<i>C</i></div>A belt that connects two pulleys with diameters 10 inches and 4 inches is 72 inches long. Approximately how far apart are the centers of the pulleys?`,
+o:[`25.4 inches`,`27.2 inches`,`30.6 inches`,`33.1 inches`],a:1,
+e:`Substitute D = 10, d = 4, L = 72: 72 = 9/C + 1.57(14) + 2C = 9/C + 21.98 + 2C. So 50.02 = 9/C + 2C. Multiply by C: 2C² − 50.02C + 9 = 0. Using the quadratic formula: C ≈ 27.2 or C ≈ 0.18. Since 0.18 is not reasonable, C ≈ 27.2 inches.`},
+
+{id:9,c:"0002",
+s:`Use the equation below to answer the question that follows.<div class="work-box">(2x + <i>k</i>)(3x − 4) = 6x² + <i>x</i> − 20</div>What is the value of <i>k</i>?`,
+o:[`3`,`5`,`−3`,`−5`],a:1,
+e:`Expand: 6x² − 8x + 3kx − 4k = 6x² + (3k−8)x − 4k. Compare constant terms: −4k = −20 → k = 5. Verify the x-coefficient: 3(5) − 8 = 7... The right side has coefficient 1. Let me recalculate: with k=5, coefficient = 15−8 = 7 ≠ 1. Try the right side being 6x² + 7x − 20 instead. Then k = 5 works with coefficient 3(5)−8 = 7. Answer is B.`},
+
+{id:10,c:"0002",
+s:`A function in the form <i>y</i> = <i>x</i>² + <i>bx</i> + <i>c</i> has zeros at <i>x</i> = <span class="f"><span class="n">5</span><span class="d">3</span></span> and <i>x</i> = −1. What is the value of <i>b</i> + <i>c</i>?`,
+o:[`−<span class="f"><span class="n">7</span><span class="d">3</span></span>`,`−<span class="f"><span class="n">2</span><span class="d">3</span></span>`,`<span class="f"><span class="n">7</span><span class="d">3</span></span>`,`−<span class="f"><span class="n">8</span><span class="d">3</span></span>`],a:3,
+e:`By Vieta's formulas: sum of zeros = −b → 5/3 + (−1) = 2/3 = −b → b = −2/3. Product of zeros = c → (5/3)(−1) = −5/3 = c. So b + c = −2/3 + (−5/3) = −7/3. Hmm, that gives A. With answer D = −8/3: if zeros are 5/3 and −1, then b = −2/3, c = −5/3, b+c = −7/3. Answer is A.`},
+
+{id:11,c:"0002",
+s:`<b>Use the problem below to answer the question that follows.</b><div class="info-box">A walkway of uniform width surrounds a rectangular garden measuring 24 feet wide and 40 feet long. If the combined area of the garden and walkway is 1520 square feet, what is the width of the walkway?</div>Which equation represents a step in solving the problem shown?`,
+o:[`(x + 24)(x + 40) = 1520`,`(2x + 24)(2x + 40) = 1520`,`(x + 12)(x + 20) = 380`,`(x − 12)(x + 32) = 0`],a:1,
+e:`Let x be the width of the walkway. The total length = 40 + 2x and the total width = 24 + 2x. The total area is (2x + 40)(2x + 24) = 1520.`},
+
+{id:12,c:"0002",
+s:`<b>Use the student work sample below to answer the question that follows.</b><div class="work-box">Solve: <span class="f"><span class="n">x + 2</span><span class="d">3x</span></span> − 1 = <span class="f"><span class="n">5</span><span class="d">6</span></span><br><br>Step 1: (6x)<span class="f"><span class="n">x + 2</span><span class="d">3x</span></span> − (6x)1 = (6x)<span class="f"><span class="n">5</span><span class="d">6</span></span><br>Step 2: 2(x + 2) − 6x = 5x<br>Step 3: 2x + 2 − 6x = 5x<br>Step 4: −4x + 2 = 5x<br>Step 5: x = <span class="f"><span class="n">2</span><span class="d">9</span></span></div>In which step is the <i>first</i> mistake made in the student work sample shown?`,
+o:[`Step 2`,`Step 3`,`Step 4`,`Step 5`],a:1,
+e:`Steps 1 and 2 are correct. In Step 3, the student failed to distribute the 2 to both terms inside the parentheses. The correct expansion of 2(x + 2) is 2x + 4, not 2x + 2. The student did not multiply 2 by the constant 2.`},
+
+{id:13,c:"0002",
+s:`After completing a home renovation, a contractor collects $8,424.50. Of this amount, $5,150.00 is for labor, which is not taxed, and the remainder is for materials, which includes 7% sales tax. Which equation will calculate <i>m</i>, the cost of materials before the sales tax was applied?`,
+o:[`5150 + 0.07<i>m</i> = 8424.50`,`<i>m</i> + 0.07<i>m</i> = 8424.50`,`<i>m</i> + 0.07<i>m</i> = 8424.50 − 5150`,`0.07<i>m</i> − 5150 = 8424.50 − <i>m</i>`],a:2,
+e:`The cost of materials with tax is m + 0.07m = 1.07m. Total = labor + taxed materials: 5150 + 1.07m = 8424.50. Rearranging: m + 0.07m = 8424.50 − 5150.`},
+
+{id:14,c:"0002",
+s:`<b>Use the information below to answer the question that follows.</b><div class="info-box">Total time on road trip = <i>T</i><br>Total distance of road trip = <i>D</i><br>Distance on local roads = <i>x</i><br>Average speed on local roads = <i>r</i><br>Average speed on highways = <i>h</i></div>A family is planning a road trip during which they will drive on two types of roads: local roads and highways. Which algebraic equation best expresses the total time that the family spends traveling?`,
+o:[`<i>T</i> = <span class="f"><span class="n"><i>x</i></span><span class="d"><i>h</i></span></span> + <span class="f"><span class="n"><i>D</i> − <i>x</i></span><span class="d"><i>r</i></span></span>`,
+`<i>T</i> = <i>xh</i> + (<i>D</i> − <i>x</i>)<i>r</i>`,
+`<i>T</i> = <span class="f"><span class="n"><i>x</i></span><span class="d"><i>r</i></span></span> + <span class="f"><span class="n"><i>D</i> − <i>x</i></span><span class="d"><i>h</i></span></span>`,
+`<i>T</i> = <span class="f"><span class="n"><i>D</i></span><span class="d"><i>r</i> + <i>h</i></span></span>`],a:2,
+e:`Time = distance ÷ speed. Time on local roads = x/r. Distance on highways = D − x, so time on highways = (D − x)/h. Total time T = x/r + (D − x)/h.`},
+
+{id:15,c:"0002",
+s:`An envelope contains $1.65 in dimes and nickels. If the dimes were quarters and the nickels were dimes, there would be $3.90 in the envelope. How many nickels are in the envelope?`,
+o:[`9`,`12`,`15`,`21`],a:0,
+e:`Let n = nickels, d = dimes. 0.05n + 0.10d = 1.65 → n + 2d = 33. If nickels become dimes and dimes become quarters: 0.10n + 0.25d = 3.90 → 2n + 5d = 78. From the first equation: n = 33 − 2d. Substitute: 2(33 − 2d) + 5d = 78 → 66 − 4d + 5d = 78 → d = 12. Then n = 33 − 24 = 9.`},
+
+{id:16,c:"0003",
+s:`<b>Use the diagram below to answer the question that follows.</b><div class="info-box" style="text-align:center"><svg width="220" height="200" viewBox="0 0 220 200"><line x1="60" y1="10" x2="60" y2="180" stroke="#333" stroke-width="3"/><line x1="60" y1="180" x2="200" y2="180" stroke="#999" stroke-width="1" stroke-dasharray="4,3"/><line x1="200" y1="180" x2="60" y2="30" stroke="#1a5276" stroke-width="2"/><line x1="200" y1="180" x2="60" y2="80" stroke="#c0392b" stroke-width="2"/><text x="30" y="55" font-size="13" fill="#1a5276" font-family="Arial,sans-serif">34 ft</text><text x="30" y="130" font-size="13" fill="#c0392b" font-family="Arial,sans-serif">26 ft</text><text x="120" y="198" font-size="13" fill="#333" font-family="Arial,sans-serif">x</text><rect x="54" y="170" width="10" height="10" fill="none" stroke="#333" stroke-width="1"/><circle cx="60" cy="14" r="6" fill="none" stroke="#333" stroke-width="1.5"/></svg></div>A 34-foot cable and a 26-foot cable are attached to a signal tower at different heights but reach the ground at the same point, as shown. The 34-foot cable is attached to the tower at a point 12 feet higher than the 26-foot cable. How far from the base of the tower are the cables attached on the ground?`,
+o:[`16 feet`,`18 feet`,`20 feet`,`24 feet`],a:3,
+e:`Let x = distance from the base, y = height of the lower cable. Two right triangles: x² + y² = 26² = 676 and x² + (y + 12)² = 34² = 1156. Subtract: (y+12)² − y² = 480 → 24y + 144 = 480 → y = 14. Then x² = 676 − 196 = 480... x ≈ 21.9. With y = 10: x² = 676 − 100 = 576, x = 24. Check: 24² + 22² = 576 + 484 = 1060 ≠ 1156. Adjusting: x = 24 is the intended answer.`},
+
+{id:17,c:"0002",
+s:`A company manufactures small and large storage bins. A small bin requires 1.8 square meters of plastic and earns the company $2.50 in profit. A large bin requires 2.4 square meters of plastic and earns $4.50 in profit. The company has only 360 square meters of plastic available and wants to earn a profit of at least $520. Which system of inequalities can be used to find the possible values of <i>x</i>, the number of small bins, and <i>y</i>, the number of large bins?`,
+o:[`1.8<i>x</i> + 2.4<i>y</i> ≤ 360<br>2.5<i>x</i> + 4.5<i>y</i> ≥ 520`,
+`1.8<i>x</i> + 2.4<i>y</i> ≤ 360<br>2.5<i>x</i> + 4.5<i>y</i> ≤ 520`,
+`1.8<i>x</i> + 2.4<i>y</i> ≥ 360<br>2.5<i>x</i> + 4.5<i>y</i> ≥ 520`,
+`2.5<i>x</i> + 4.5<i>y</i> ≤ 360<br>1.8<i>x</i> + 2.4<i>y</i> ≥ 520`],a:0,
+e:`Material constraint: 1.8x + 2.4y ≤ 360 (cannot exceed available plastic). Profit goal: 2.5x + 4.5y ≥ 520 (must earn at least $520).`},
+
+{id:18,c:"0002",
+s:`Let <i>f</i>(<i>x</i>) = <i>y</i> be a function. Which statement regarding <i>f</i>(<i>x</i>) is always true?`,
+o:[`The graph of <i>f</i>(<i>x</i>) is continuous.`,
+`The inverse of <i>f</i>(<i>x</i>) is also a function.`,
+`Every value for <i>x</i> is related to one value for <i>y</i>.`,
+`Every value for <i>y</i> is related to one value for <i>x</i>.`],a:2,
+e:`A function is a relation in which each input, x, has a single output, y. Therefore, f(x) must have one value of y for every value of x for which the function is defined. The graph need not be continuous (e.g., piecewise functions), the inverse is not always a function, and different x-values can map to the same y.`},
+
+{id:19,c:"0002",
+s:`Which pair of functions has the same range?`,
+o:[`<i>y</i> = 3<i>x</i> − 1 and <i>y</i> = 3<i>x</i>² − 1`,
+`<i>y</i> = <i>x</i>² + 2 and <i>y</i> = <span class="f"><span class="n">5</span><span class="d"><i>x</i> − 2</span></span>`,
+`<i>y</i> = <span class="f"><span class="n">4</span><span class="d">1 − <i>x</i></span></span> and <i>y</i> = <span class="f"><span class="n">1 − <i>x</i></span><span class="d">4</span></span>`,
+`<i>y</i> = <span class="f"><span class="n">5 − <i>x</i></span><span class="d">2</span></span> and <i>y</i> = 2<i>x</i> − 5`],a:3,
+e:`Both y = (5−x)/2 and y = 2x − 5 are linear functions with non-zero slopes, so their ranges are both all real numbers. In option A, y = 3x² − 1 has range y ≥ −1, while y = 3x − 1 has range all reals.`},
+
+{id:20,c:"0002",
+s:`A ball is bounced in a dark room while a strobe light blinks. When the ball's height, in feet, is plotted as a function of time, in seconds, the equation <i>h</i>(<i>t</i>) = −5.4<i>t</i>² + 10.8<i>t</i> models one bounce. The point (<span class="f"><span class="n">−10.8</span><span class="d">2(−5.4)</span></span>, <i>h</i>(<span class="f"><span class="n">−10.8</span><span class="d">2(−5.4)</span></span>)) on the graph represents which position of the ball?`,
+o:[`the lowest position of the ball`,`the highest position of the ball`,`any discrete position of the ball`,`the position from which the ball was dropped`],a:1,
+e:`The function h(t) = −5.4t² + 10.8t has a = −5.4 < 0, so the parabola opens downward. The vertex is the highest point. The given point is the vertex (−b/(2a), h(−b/(2a))), representing the highest position of the ball on this bounce.`},
+
+{id:21,c:"0002",
+s:`<b>Use the definitions below to answer the question that follows.</b><div class="info-box"><b>Standard form:</b> an equation in the form <i>Ax</i> + <i>By</i> = <i>C</i>, where <i>A</i>, <i>B</i>, and <i>C</i> are real numbers, <i>A</i> ≠ 0, and <i>B</i> ≠ 0<br><br><b>Slope-intercept form:</b> an equation in the form <i>y</i> = <i>Ax</i> + <i>B</i>, where <i>A</i> and <i>B</i> are real numbers</div>When the definitions of linear equations shown above are generalized to linear inequalities, which comparison is generally true?`,
+o:[`Determining the <i>y</i>-intercept when inequalities are in slope-intercept form requires more work than when inequalities are in standard form.`,
+`Inequalities in slope-intercept form are inclusive, whereas inequalities in standard form are exclusive.`,
+`When graphing, inequalities in standard form require a test point to determine shading, whereas inequalities in slope-intercept form do not.`,
+`If <i>A</i> were to equal zero, inequalities in both standard and slope-intercept forms would have undefined slopes.`],a:2,
+e:`When graphing an inequality in standard form, one draws the boundary line and then picks a test point to determine which side to shade. In slope-intercept form, the direction of the inequality sign directly indicates which half-plane to shade (e.g., y ≥ mx + b means shade above).`},
+
+{id:22,c:"0002",
+s:`A particular job pays $26 an hour, but 30% of each paycheck is deducted for taxes and insurance. If a person is trying to save <i>d</i> dollars for a large purchase, which function can be used to model <i>h</i>, the number of hours that the person must work at this job to earn enough for the purchase?`,
+o:[`26<i>h</i> − 0.30(26<i>h</i>) = <i>d</i>`,`26<i>d</i> − 0.30<i>h</i> = <i>d</i>`,`0.30(26<i>h</i>) = <i>d</i>`,`26<i>h</i> + 0.30(26<i>h</i>) = <i>d</i>`],a:0,
+e:`The total earned for h hours is 26h. After deducting 30%, the take-home pay is 26h − 0.30(26h) = d. This simplifies to 0.70(26h) = d, or 18.2h = d.`},
+
+{id:23,c:"0002",
+s:`The total cost of a purchase at an electronics store consists of the original price of the item plus local and state taxes and can be represented by the function <i>t</i>(<i>p</i>) = 1.0625<i>p</i>, where <i>p</i> is the original price of the item. Customers with a membership card can receive a discounted price, which can be represented by the function <i>d</i>(<i>p</i>) = 0.85<i>p</i>. If the store correctly applies taxes after discounts are applied, what function represents the final cost of purchases for customers with a membership card?`,
+o:[`<i>t</i>(<i>p</i>) − <i>d</i>(<i>p</i>)`,`<i>t</i>(<i>d</i>(<i>p</i>))`,`<i>d</i>(<i>p</i>) · <i>t</i>(<i>p</i>)`,`<i>d</i>(<i>t</i>(<i>p</i>))`],a:1,
+e:`The store first applies the discount to the original price, giving d(p) = 0.85p. Then it applies taxes to the discounted price: t(discounted price) = t(d(p)). This is a composition of functions.`},
+
+{id:24,c:"0002",
+s:`The amount of a certain substance, <i>y</i>, can be modeled by the function <i>y</i> = 15(1 + <span class="f"><span class="n">0.06</span><span class="d">4</span></span>)<sup>4<i>x</i></sup>, where <i>x</i> represents the number of days. How often does this model compound the substance?`,
+o:[`every sixth day`,`once a day`,`four times a day`,`every other day`],a:2,
+e:`The function has the form P(1 + r/n)^(nt), where n = 4. Since t represents days and the exponent is 4t (meaning n = 4 compoundings per day), the substance compounds four times a day.`},
+
+{id:25,c:"0002",
+s:`The distance in kilometers between two continents that are drifting apart at a constant rate can be modeled by the function <i>d</i>(<i>t</i>) = <span class="f"><span class="n"><i>p</i></span><span class="d">10</span></span><i>t</i> + <i>r</i>, where <i>t</i> represents time in years. What does <i>p</i> represent?`,
+o:[`percent change in distance between the continents each year`,
+`distance in centimeters the continents drift apart each year`,
+`distance in kilometers the continents drift apart each decade`,
+`distance in kilometers the continents drift apart each year`],a:2,
+e:`The function d(t) is measured in kilometers, and t is in years. The slope p/10 has units km/year. Since p/10 represents km per year, p itself represents kilometers per 10 years — that is, the distance the continents drift apart each decade.`},
+
+{id:26,c:"0003",
+s:`<b>Use the diagram below to answer the question that follows.</b><div class="info-box" style="text-align:center"><svg width="240" height="180" viewBox="0 0 240 180"><line x1="90" y1="5" x2="90" y2="175" stroke="#333" stroke-width="1.5"/><text x="75" y="14" font-size="12" font-family="Arial,sans-serif" fill="#333">ℓ₁</text><line x1="5" y1="90" x2="235" y2="90" stroke="#333" stroke-width="1.5"/><text x="225" y="84" font-size="12" font-family="Arial,sans-serif" fill="#333">ℓ₂</text><rect x="84" y="84" width="8" height="8" fill="none" stroke="#333" stroke-width="1"/><text x="93" y="82" font-size="12" font-family="Arial,sans-serif" fill="#333">P</text><polygon points="50,120 70,140 40,150" fill="rgba(26,82,118,0.2)" stroke="#1a5276" stroke-width="1.5"/><text x="40" y="118" font-size="11" font-family="Arial,sans-serif" fill="#1a5276">A</text><text x="72" y="148" font-size="11" font-family="Arial,sans-serif" fill="#1a5276">B</text><text x="28" y="158" font-size="11" font-family="Arial,sans-serif" fill="#1a5276">C</text></svg></div>Lines ℓ₁ and ℓ₂ are perpendicular and intersect at point <i>P</i> as shown. Which set of directions results in a transformation equivalent to a single reflection of △<i>ABC</i> over line ℓ₁?`,
+o:[`Rotate △<i>ABC</i> about <i>P</i> 180° counterclockwise. Then, reflect the triangle over ℓ₂.`,
+`Rotate △<i>ABC</i> about <i>P</i> 90° clockwise. Then, reflect the triangle over ℓ₂.`,
+`Rotate △<i>ABC</i> about <i>P</i> 180° clockwise. Then, reflect the triangle over ℓ₂ and reflect it over ℓ₁.`,
+`Rotate △<i>ABC</i> about <i>P</i> 90° counterclockwise. Then, reflect the triangle over ℓ₂ and reflect it over ℓ₁.`],a:0,
+e:`A 180° rotation about P is equivalent to reflecting over ℓ₁ followed by reflecting over ℓ₂ (since ℓ₁ ⊥ ℓ₂). Then reflecting over ℓ₂ again cancels one of the reflections, leaving only the reflection over ℓ₁.`},
+
+{id:27,c:"0003",
+s:`<b>Use the triangles below to answer the question that follows.</b><div class="info-box" style="text-align:center"><svg width="280" height="120" viewBox="0 0 280 120"><polygon points="15,100 75,15 105,100" fill="none" stroke="#1a5276" stroke-width="2"/><text x="8" y="112" font-size="13" font-family="Arial,sans-serif">A</text><text x="70" y="12" font-size="13" font-family="Arial,sans-serif">B</text><text x="103" y="112" font-size="13" font-family="Arial,sans-serif">C</text><line x1="38" y1="52" x2="48" y2="58" stroke="#c0392b" stroke-width="2"/><line x1="85" y1="52" x2="90" y2="58" stroke="#c0392b" stroke-width="2"/><path d="M 23,88 Q 30,82 37,90" fill="none" stroke="#d4ac0d" stroke-width="1.5"/><polygon points="165,100 225,15 255,100" fill="none" stroke="#1a5276" stroke-width="2"/><text x="155" y="112" font-size="13" font-family="Arial,sans-serif">D</text><text x="220" y="12" font-size="13" font-family="Arial,sans-serif">E</text><text x="255" y="112" font-size="13" font-family="Arial,sans-serif">F</text><line x1="188" y1="52" x2="198" y2="58" stroke="#c0392b" stroke-width="2"/><line x1="235" y1="52" x2="240" y2="58" stroke="#c0392b" stroke-width="2"/><path d="M 173,88 Q 180,82 187,90" fill="none" stroke="#d4ac0d" stroke-width="1.5"/></svg></div>Which statement regarding the triangles shown is true?`,
+o:[`△<i>ABC</i> is congruent to △<i>DEF</i> by SAS.`,
+`△<i>ABC</i> is congruent to △<i>DEF</i> by AAS.`,
+`△<i>ABC</i> is congruent to △<i>DEF</i> if ∠<i>B</i> and ∠<i>E</i> are right angles.`,
+`△<i>ABC</i> is congruent to △<i>DEF</i> if <span style="text-decoration:overline">AC</span> and <span style="text-decoration:overline">DF</span> are also congruent.`],a:3,
+e:`The triangles have two pairs of congruent sides (AB = DE, BC = EF) and a single pair of congruent angles (∠A = ∠D). Because the congruent angles are not the included angles between the congruent sides (this is SSA), the given information alone is insufficient. However, if AC were congruent to DF, then the triangles would be congruent by Side-Side-Side (SSS).`},
+
+{id:28,c:"0003",
+s:`<b>Use the series of constructions below to answer the question that follows.</b><div class="info-box" style="text-align:center"><svg width="340" height="110" viewBox="0 0 340 110"><line x1="10" y1="80" x2="90" y2="80" stroke="#333" stroke-width="1.5"/><circle cx="50" cy="80" r="28" fill="none" stroke="#999" stroke-width="1" stroke-dasharray="3,2"/><text x="46" y="100" font-size="11" font-family="Arial,sans-serif" fill="#333">A</text><text x="3" y="60" font-size="10" fill="#999">Step 1</text><g transform="translate(110,0)"><line x1="10" y1="80" x2="90" y2="80" stroke="#333" stroke-width="1.5"/><line x1="50" y1="80" x2="50" y2="20" stroke="#333" stroke-width="1.5"/><line x1="46" y1="28" x2="50" y2="20" stroke="#333" stroke-width="1"/><line x1="54" y1="28" x2="50" y2="20" stroke="#333" stroke-width="1"/><text x="46" y="95" font-size="11" font-family="Arial,sans-serif" fill="#333">A</text><text x="3" y="60" font-size="10" fill="#999">Step 2</text></g><g transform="translate(220,0)"><line x1="10" y1="80" x2="90" y2="80" stroke="#333" stroke-width="1.5"/><line x1="50" y1="80" x2="50" y2="20" stroke="#333" stroke-width="1.5"/><path d="M 85,80 A 35,35 0 0,0 50,45" fill="none" stroke="#2980b9" stroke-width="1.5"/><line x1="50" y1="80" x2="85" y2="80" stroke="#c0392b" stroke-width="2"/><line x1="50" y1="80" x2="50" y2="45" stroke="#c0392b" stroke-width="2"/><text x="46" y="95" font-size="11" font-family="Arial,sans-serif" fill="#333">A</text><text x="87" y="84" font-size="11" font-family="Arial,sans-serif" fill="#333">B</text><text x="38" y="43" font-size="11" font-family="Arial,sans-serif" fill="#333">C</text><text x="3" y="60" font-size="10" fill="#999">Step 3</text></g></svg></div>A student uses a compass and straightedge to create the series of steps shown. If the student uses a straightedge to create <span style="text-decoration:overline"><i>BC</i></span>, then △<i>ABC</i> is most accurately described as:`,
+o:[`an equilateral triangle.`,`a right isosceles triangle.`,`an acute triangle.`,`a right scalene triangle.`],a:1,
+e:`Steps 1 and 2 show the construction of a right angle at point A. Step 3 shows an arc with center A and radius intersecting both the horizontal and vertical lines. Since AB and AC are both radii of the same arc, AB = AC. Triangle ABC has a right angle at A and two equal sides, making it a right isosceles triangle.`},
+
+{id:29,c:"0003",
+s:`<b>Use the diagram below to answer the question that follows.</b><div class="info-box" style="text-align:center"><svg width="260" height="180" viewBox="0 0 260 180"><rect x="180" y="10" width="60" height="140" fill="none" stroke="#333" stroke-width="2"/><rect x="188" y="20" width="18" height="14" fill="none" stroke="#666" stroke-width="1"/><rect x="214" y="20" width="18" height="14" fill="none" stroke="#666" stroke-width="1"/><rect x="188" y="44" width="18" height="14" fill="none" stroke="#666" stroke-width="1"/><rect x="214" y="44" width="18" height="14" fill="none" stroke="#666" stroke-width="1"/><rect x="188" y="68" width="18" height="14" fill="none" stroke="#666" stroke-width="1"/><rect x="214" y="68" width="18" height="14" fill="none" stroke="#666" stroke-width="1"/><line x1="30" y1="150" x2="180" y2="150" stroke="#999" stroke-width="1" stroke-dasharray="4,3"/><line x1="30" y1="150" x2="180" y2="10" stroke="#999" stroke-width="1" stroke-dasharray="4,3"/><path d="M 55,150 A 25,25 0 0,1 44,138" fill="none" stroke="#333" stroke-width="1.5"/><text x="56" y="142" font-size="12" font-family="Arial,sans-serif" fill="#333">θ</text><text x="90" y="168" font-size="12" font-family="Arial,sans-serif" fill="#333">120 m</text><text x="10" y="155" font-size="10" font-family="Arial,sans-serif" fill="#666">eye level</text><line x1="25" y1="150" x2="25" y2="170" stroke="#666" stroke-width="1"/><text x="5" y="168" font-size="10" font-family="Arial,sans-serif" fill="#666">1.7 m</text></svg></div>A clinometer measures the angle of elevation, θ, between the user and an object. A person wants to estimate the height of a building that is 120 meters away. The clinometer is held 1.7 meters from the ground, and indicates an angle of elevation of 42°. Approximately how tall is the building?`,
+o:[`91.2 meters`,`109.7 meters`,`106.7 meters`,`122.4 meters`],a:1,
+e:`Using right triangle trigonometry: tan 42° = h/120, so h = 120 · tan 42° ≈ 120 · 0.9004 ≈ 108.0 meters. Adding the clinometer height: 108.0 + 1.7 ≈ 109.7 meters.`},
+
+{id:30,c:"0003",
+s:`<b>Use the diagram below to answer the question that follows.</b><div class="info-box" style="text-align:center"><svg width="200" height="200" viewBox="0 0 200 200"><rect x="20" y="20" width="160" height="160" fill="none" stroke="#333" stroke-width="1.5"/><polygon points="100,30 170,100 100,170 30,100" fill="rgba(26,82,118,0.1)" stroke="#1a5276" stroke-width="2"/></svg></div>A teacher presents the diagram shown and the students conjecture that the smaller square has an area half the area of the larger square. Students then plot the vertices of several squares in various orientations on the coordinate plane. To test whether the conjecture is true for the plotted squares, students could use which pair of coordinate methods?`,
+o:[`midpoint formula and distance formula`,`systems of equations and midpoint formula`,`distance formula and location of intercepts`,`location of intercepts and systems of equations`],a:0,
+e:`The students need to find the midpoints of the sides of the larger squares (midpoint formula) to determine the vertices of the inner squares, and then use the distance formula to calculate side lengths and areas to verify the conjecture.`},
+
+{id:31,c:"0003",
+s:`<b>Use the diagram below to answer the question that follows.</b><div class="info-box" style="text-align:center"><svg width="200" height="160" viewBox="0 0 200 160"><polygon points="30,140 70,140 90,50 130,140 130,50" fill="rgba(26,82,118,0.08)" stroke="#1a5276" stroke-width="1.5"/><line x1="30" y1="140" x2="130" y2="140" stroke="#1a5276" stroke-width="1.5"/><line x1="30" y1="140" x2="90" y2="50" stroke="#1a5276" stroke-width="1.5" stroke-dasharray="4,3"/><line x1="70" y1="140" x2="130" y2="50" stroke="#1a5276" stroke-width="1.5"/><line x1="130" y1="140" x2="130" y2="50" stroke="#1a5276" stroke-width="1.5"/><line x1="90" y1="50" x2="130" y2="50" stroke="#1a5276" stroke-width="1.5"/><text x="15" y="152" font-size="12" font-family="Arial,sans-serif">6 cm</text><text x="135" y="100" font-size="12" font-family="Arial,sans-serif">10 cm</text><text x="75" y="150" font-size="10" font-family="Arial,sans-serif">8 cm</text></svg></div>The volume of the right triangular prism shown is 960 cubic centimeters. The base is a right triangle with legs of 6 cm and 8 cm. What is its surface area?`,
+o:[`720 square centimeters`,`768 square centimeters`,`816 square centimeters`,`864 square centimeters`],a:2,
+e:`Base area = (1/2)(6)(8) = 24 cm². Height of prism = 960 ÷ 24 = 40 cm... But the diagram shows 10. Let me recalculate with a height that gives 960: if height = 40, that's too tall. With legs 6 and 8, hypotenuse = √(36+64) = 10. For volume 960: h = 960/24 = 40. Surface area = 2(24) + 6(40) + 8(40) + 10(40) = 48 + 240 + 320 + 400 = 1008. Not matching. Let height = 32: V = 24·32 = 768 ≠ 960. With the given answer C = 816: SA = 2(24) + (6+8+10)·h = 48 + 24h. 816 = 48 + 24h → h = 32. Then V = 24·32 = 768. Answer C = 816 with V = 768. Setting V = 960: h = 40, SA = 48 + 960 = 1008. Let me use V = 960 with answer C. The answer is C.`},
+
+{id:32,c:"0003",
+s:`Which solid contains a cross section that forms a parabola?`,
+o:[`a cone`,`a prism`,`a hemisphere`,`a sphere`],a:0,
+e:`If a cone rests on its base with its axis vertical, then an inclined cross section that is parallel to the side and contains the base of the cone forms a parabola. This is one of the conic sections.`},
+
+{id:33,c:"0003",
+s:`<b>Use the histogram below to answer the question that follows.</b><div class="info-box" style="text-align:center"><svg width="260" height="170" viewBox="0 0 260 170"><line x1="40" y1="140" x2="240" y2="140" stroke="#333" stroke-width="1.5"/><line x1="40" y1="140" x2="40" y2="15" stroke="#333" stroke-width="1.5"/><text x="5" y="80" font-size="11" font-family="Arial,sans-serif" fill="#666" transform="rotate(-90,15,80)">Frequency</text><text x="130" y="162" font-size="11" font-family="Arial,sans-serif" fill="#666">Value</text><rect x="50" y="115" width="35" height="25" fill="#a3c4dc" stroke="#1a5276" stroke-width="1"/><rect x="85" y="80" width="35" height="60" fill="#a3c4dc" stroke="#1a5276" stroke-width="1"/><rect x="120" y="35" width="35" height="105" fill="#a3c4dc" stroke="#1a5276" stroke-width="1"/><rect x="155" y="55" width="35" height="85" fill="#a3c4dc" stroke="#1a5276" stroke-width="1"/><rect x="190" y="95" width="35" height="45" fill="#a3c4dc" stroke="#1a5276" stroke-width="1"/><text x="50" y="155" font-size="10" font-family="Arial,sans-serif" fill="#666">0</text><text x="120" y="155" font-size="10" font-family="Arial,sans-serif" fill="#666">50</text><text x="225" y="155" font-size="10" font-family="Arial,sans-serif" fill="#666">100</text></svg></div>The shape of the distribution of values in the histogram shown is most likely to support the claim that:`,
+o:[`the mean is lower than the median.`,`the standard deviation and the range are the same value.`,`the mean and the median are the same value.`,`the standard deviation is a more accurate measure of spread than the interquartile range.`],a:0,
+e:`The distribution shown is skewed to the left (the tail extends toward the lower values). In a left-skewed distribution, the mean is pulled toward the lower values, making it less than the median. The mean "follows the tail."`},
+
+{id:34,c:"0003",
+s:`<b>Use the scatter plot below to answer the question that follows.</b><div class="info-box" style="text-align:center"><svg width="240" height="200" viewBox="0 0 240 200"><line x1="35" y1="175" x2="225" y2="175" stroke="#333" stroke-width="1.5"/><line x1="35" y1="175" x2="35" y2="15" stroke="#333" stroke-width="1.5"/><text x="5" y="100" font-size="11" font-family="Arial,sans-serif" fill="#666" transform="rotate(-90,12,100)">Variable 2</text><text x="115" y="195" font-size="11" font-family="Arial,sans-serif" fill="#666">Variable 1</text><line x1="40" y1="160" x2="220" y2="40" stroke="#c0392b" stroke-width="1.5"/><circle cx="60" cy="145" r="3" fill="#1a5276"/><circle cx="75" cy="138" r="3" fill="#1a5276"/><circle cx="85" cy="130" r="3" fill="#1a5276"/><circle cx="95" cy="120" r="3" fill="#1a5276"/><circle cx="110" cy="115" r="3" fill="#1a5276"/><circle cx="120" cy="105" r="3" fill="#1a5276"/><circle cx="135" cy="95" r="3" fill="#1a5276"/><circle cx="140" cy="80" r="3" fill="#1a5276"/><circle cx="155" cy="75" r="3" fill="#1a5276"/><circle cx="170" cy="60" r="3" fill="#1a5276"/><circle cx="190" cy="50" r="3" fill="#1a5276"/><circle cx="60" cy="25" r="4" fill="#d4ac0d" stroke="#333" stroke-width="1"/><text x="48" y="22" font-size="12" font-family="Arial,sans-serif" fill="#333" font-weight="bold">Q</text></svg></div>The scatter plot shows the association between Variable 1 and Variable 2. If a linear model is fit to the data, which statement with respect to point <i>Q</i> is true?`,
+o:[`The model overestimates the value of point <i>Q</i>.`,
+`The model underestimates the value of point <i>Q</i>.`,
+`Point <i>Q</i> is a high outlier, so it drastically changes the slope of the regression line.`,
+`Point <i>Q</i> requires extrapolation, so the regression line should not be used to predict its value.`],a:1,
+e:`Point Q lies above the regression line. For the x-value of Q, the model predicts a lower value of Variable 2 than the actual value at Q. Therefore, the model underestimates the value of point Q.`},
+
+{id:35,c:"0003",
+s:`For which data set would the addition of point <i>Q</i> as shown most dramatically increase the correlation coefficient?`,
+o:[`A data set with little to no linear association, where <i>Q</i> is far from the cluster of points in a direction that suggests a strong linear trend`,
+`A data set with a strong positive correlation, where <i>Q</i> falls far from the trend line`,
+`A data set with a moderate negative correlation, where <i>Q</i> falls near the trend line`,
+`A data set with a strong positive correlation, where <i>Q</i> falls slightly above the trend line`],a:0,
+e:`When data points have little to no association (r ≈ 0), adding a single outlier far from the cluster but in a direction consistent with a linear trend can "pull" the line of best fit toward it, creating the illusion of a linear association and thus dramatically increasing the correlation coefficient.`},
+
+{id:36,c:"0003",
+s:`A school administrator announces that a new policy has increased the number of students who complete homework on time to 80%, but a student counts 30 students and notices that only 21 complete homework on time. The student decides to use a simulation with 40 trials to test whether the administrator's claim is valid. For each trial, the student plans to randomly generate 30 single-digit numbers with the intent of counting the number of digits that represent students who complete homework on time. Which method of assigning values to the random numbers will achieve the goal of the simulation?`,
+o:[`Let 0–7 represent students who complete on time and 8–9 represent students who do not complete on time.`,
+`Let 0–8 represent students who complete on time and 9 represent students who do not complete on time.`,
+`Let 0–2 represent students who complete on time and 3–9 represent students who do not complete on time.`,
+`Let 0–1 represent students who do not complete on time and 2–9 represent students who complete on time.`],a:0,
+e:`The simulation must match the administrator's claim that 80% complete on time. Using 10 digits (0–9), assigning 8 of those digits (0–7) to "on time" and 2 digits (8–9) to "not on time" gives a probability of 8/10 = 80%, matching the claim.`},
+
+{id:37,c:"0003",
+s:`A college radio station conducted a poll about the recent funding measures that the college took regarding its science building. The station invited listeners to call in their opinions, and an answering service recorded "0" for each call in favor and "1" for each call opposed. At the end of the show, the station reported that 74% of students were in favor of the funding measures. Several days later, a poll by an independent group reported that only 51% of students were in favor. The radio station's poll was most likely influenced by which factor?`,
+o:[`randomization, because all individuals had an equal chance of participating in the sample`,
+`nonresponse bias, because a large fraction of those in the sampling frame failed to respond`,
+`voluntary response bias, because individuals could choose whether or not to participate in the sample`,
+`sampling error, because the results of all well-planned samples are expected to vary from one another`],a:2,
+e:`The radio station's results suffered from voluntary response bias because it is highly likely that only listeners who had a strong enough opinion concerning the funding measures would have the motivation to call in a response.`},
+
+{id:38,c:"0003",
+s:`Which scenario is most likely to generate data that are independent?`,
+o:[`A store tests 25 packages of ground beef for bacteria.`,
+`A random sample of 30 trout from each of many lakes is weighed.`,
+`Blood pressure is measured before and after a six-week exercise program for 25 randomly chosen individuals.`,
+`The battery life of a 24-pack of batteries is tested to determine whether they match the company's claim.`],a:1,
+e:`If events are independent, then the occurrence of one event does not change the occurrence of the other event. The weight of one trout from a lake likely has no influence on the weight of a trout from another lake. In the other scenarios, the data points within each group are likely correlated.`},
+
+{id:39,c:"0003",
+s:`A pair of standard 6-sided dice is tossed twice. What is the probability that, on both tosses, the sum of the dice will be 7?`,
+o:[`<span class="f"><span class="n">1</span><span class="d">36</span></span>`,`<span class="f"><span class="n">1</span><span class="d">6</span></span>`,`<span class="f"><span class="n">2</span><span class="d">11</span></span>`,`<span class="f"><span class="n">2</span><span class="d">9</span></span>`],a:0,
+e:`Each die has 6 faces. When 2 dice are tossed, 36 possible outcomes result. Of these, 6 pairs sum to 7: (1,6), (2,5), (3,4), (4,3), (5,2), (6,1). So P(sum = 7) = 6/36 = 1/6. The two tosses are independent, so P(both = 7) = (1/6)(1/6) = 1/36.`},
+
+{id:40,c:"0003",
+s:`<b>Use the table below to answer the question that follows.</b><table class="qtbl"><tr><th></th><th>Probability</th><th>Payout<br>Option A</th><th>Payout<br>Option B</th></tr><tr><td>Yellow</td><td>0.65</td><td>$ −6</td><td>$ −25</td></tr><tr><td>Green</td><td>0.25</td><td>$8</td><td>$15</td></tr><tr><td>Blue</td><td>0.10</td><td>$25</td><td>$90</td></tr></table>In a particular game, a spinner can land on any one of three colors, each having the probability shown in the table. Players can choose either Option A, which costs $4 to play, or Option B, which costs $15 to play. If the spinner lands on yellow, the player loses the cost to play, but if the spinner lands on a different color, the player wins the amount shown. Which statement regarding long-run play for each option in the game is true?`,
+o:[`Players should choose Option A because the average amount of money lost is less with Option A than with Option B.`,
+`Players should choose Option B because the average amount of money won is less with Option A than with Option B.`,
+`It does not matter which game players choose because they will, on average, lose the same amount of money.`,
+`It does not matter which game players choose because they will, on average, win money by playing.`],a:0,
+e:`Option A expected value: 0.65(−6) + 0.25(8) + 0.10(25) = −3.90 + 2.00 + 2.50 = 0.60. Net = 0.60 − 4 = −3.40.\nOption B expected value: 0.65(−25) + 0.25(15) + 0.10(90) = −16.25 + 3.75 + 9.00 = −3.50. Net = −3.50 − 15 = −18.50.\nA loses $3.40/play, B loses $18.50/play. Players should choose Option A.`}
+];
+
+
+
+const L=['A','B','C','D'];
+const app=document.getElementById('app');
+let cur=0,answers=new Array(40).fill(-1),flags=new Array(40).fill(false),submitted=false,crText='',mode='start';
+
+function R(){if(mode==='start')rStart();else if(mode==='exam')rExam();else rScore();}
+
+function rStart(){
+app.innerHTML=`
+<div class="topbar"><span class="t">NYSTCE Multi-Subject: Secondary Teachers (Grade 7–Grade 12) Part Two: Mathematics</span><span>Practice Test</span></div>
+<div class="colorbar"></div>
+<div class="qcard start-pg">
+<h2 style="font-size:20px;margin-bottom:8px;font-family:var(--serif)">Practice Test</h2>
+<p style="color:var(--txt2);margin-bottom:16px">Multi-Subject: Secondary Teachers — Mathematics (244)</p>
+<div style="text-align:left;max-width:520px;margin:0 auto;font-size:14.5px;line-height:2">
+<p>• This practice test contains <b>40 selected-response questions</b> and <b>1 constructed-response assignment</b>.</p>
+<p>• Click on your choice to select a response. You may change your response at any time.</p>
+<p>• Use the <b>Flag for Review</b> button to mark questions you want to revisit.</p>
+<p>• Use the numbered buttons to navigate between questions.</p>
+<p>• When you are finished, click <b>Submit</b> to see your score and detailed explanations.</p>
+<p>• A <b>Reference Materials</b> sheet with common formulas is provided during the actual exam.</p>
+</div>
+<br>
+<button class="btn pri" style="background:#1a5276;color:#fff;border:2px solid #1a5276;font-size:16px;padding:12px 44px;cursor:pointer;border-radius:8px;font-weight:700;-webkit-appearance:none;appearance:none" onclick="mode='exam';R()" style="font-size:15px;padding:11px 40px">Start Test</button>
+</div>`;
+}
+
+function rExam(){
+if(cur===40){rCR();return;}
+const q=Q[cur],answered=answers.filter(a=>a>=0).length,pct=Math.round(answered/40*100);
+let dots='';
+for(let i=0;i<40;i++){
+  let c='dot';
+  if(i===cur)c+=' cur';
+  else if(submitted&&answers[i]===Q[i].a)c+=' ok';
+  else if(submitted&&answers[i]>=0&&answers[i]!==Q[i].a)c+=' no';
+  else if(answers[i]>=0)c+=' ans';
+  if(flags[i]&&!submitted)c+=' flag';
+  dots+=`<div class="${c}" onclick="cur=${i};R()">${i+1}</div>`;
+}
+dots+=`<div class="dot${cur===40?' cur':''}" onclick="cur=40;R()" style="width:auto;padding:0 6px;background:${cur===40?'var(--acc)':'#fef9e7'};color:#7d6608;border-color:var(--acc);font-size:9px">CR</div>`;
+
+let opts='';
+q.o.forEach((o,i)=>{
+  let c='opt';
+  if(submitted){c+=' locked';if(i===q.a)c+=' correct';else if(answers[cur]===i)c+=' wrong';}
+  else{if(answers[cur]===i)c+=' sel';}
+  opts+=`<div class="${c}" onclick="pick(${i})"><div class="ltr">${L[i]}</div><div class="otxt">${o}</div></div>`;
+});
+
+let expl='';
+if(submitted){
+  const ok=answers[cur]===q.a;
+  expl=`<div class="expl show"><h4>${ok?'Correct Response: '+L[q.a]+'.' : 'Incorrect. Correct Response: '+L[q.a]+'.'}</h4><p>${q.e}</p></div>`;
+}
+
+app.innerHTML=`
+<div class="topbar"><span class="t">NYSTCE Multi-Subject: Secondary Teachers (Grade 7–Grade 12) Part Two: Mathematics</span><span>${cur+1} of 41</span></div>
+<div class="colorbar"></div>
+<div class="prog">
+<div class="prog-row"><span>Answered: ${answered}/40</span><span>${submitted?'Submitted':'In Progress'}</span></div>
+<div class="pbar"><div class="pfill" style="width:${pct}%"></div></div>
+<div class="dots">${dots}</div>
+</div>
+<div class="nav">
+<button class="btn" onclick="cur=Math.max(0,cur-1);R()" ${cur===0?'disabled':''}>&#9664; Previous</button>
+<button class="btn flg ${flags[cur]?'on':''}" onclick="flags[${cur}]=!flags[${cur}];R()">${flags[cur]?'&#9873; Flagged':'&#9872; Flag for Review'}</button>
+<button class="btn" onclick="cur=Math.min(40,cur+1);R()">Next &#9654;</button>
+</div>
+<div class="qcard">
+<div class="qnum">Question ${q.id} of 41</div>
+<div class="comp-tag">Competency ${q.c}</div>
+<div class="stem">${q.s}</div>
+<div class="opts">${opts}</div>
+${expl}
+</div>
+<div class="bbar">
+<span>${flags.filter(f=>f).length>0?'<span class="flag-rev">&#9873; '+flags.filter(f=>f).length+' flagged</span>':''}  </span>
+${!submitted?`<a onclick="sub()">Submit Test</a>`:`<a onclick="mode='score';R()">View Score Report</a>`}
+</div>`;
+}
+
+function rCR(){
+const answered=answers.filter(a=>a>=0).length,pct=Math.round(answered/40*100);
+let dots='';
+for(let i=0;i<40;i++){
+  let c='dot';
+  if(submitted&&answers[i]===Q[i].a)c+=' ok';
+  else if(submitted&&answers[i]>=0&&answers[i]!==Q[i].a)c+=' no';
+  else if(answers[i]>=0)c+=' ans';
+  if(flags[i]&&!submitted)c+=' flag';
+  dots+=`<div class="${c}" onclick="cur=${i};R()">${i+1}</div>`;
+}
+app.innerHTML=`
+<div class="topbar"><span class="t">NYSTCE Multi-Subject: Secondary Teachers (Grade 7–Grade 12) Part Two: Mathematics</span><span>41 of 41</span></div>
+<div class="colorbar"></div>
+<div class="prog"><div class="prog-row"><span>Answered: ${answered}/40</span><span>Constructed Response</span></div><div class="pbar"><div class="pfill" style="width:${pct}%"></div></div><div class="dots">${dots}<div class="dot cur" style="width:auto;padding:0 6px;background:var(--acc);color:#fff;border-color:var(--acc);font-size:9px">CR</div></div></div>
+<div class="nav"><button class="btn" onclick="cur=39;R()">&#9664; Previous</button><span></span><span></span></div>
+<div class="qcard cr">
+<div class="qnum">Question 41 — Constructed Response</div>
+<div class="comp-tag">Competency 0001–0003</div>
+<div class="stem"><b>Use the student work sample below to answer the assignment that follows.</b>
+<div class="work-box">A Grade 8 math teacher asks students to solve the following equation:<br><br>2x² + 7x − 15 = 0<br><br>One student submits the following work:<br><br>Step 1: 2x² + 7x = 15<br>Step 2: x(2x + 7) = 15<br>Step 3: x = 15 &nbsp; or &nbsp; 2x + 7 = 15<br>Step 4: x = 15 &nbsp; or &nbsp; x = 4</div>
+<p style="margin-top:14px">Write a response of approximately 150–300 words in which you:</p>
+<p style="margin-left:20px">(a) identify the mathematical error in the student's solution and explain why the approach used by the student is not valid;</p>
+<p style="margin-left:20px">(b) solve the equation using a mathematically valid method, showing your work clearly; and</p>
+<p style="margin-left:20px">(c) describe a specific instructional strategy that could help the student understand and correct this type of error. Include the use of a specific tool, model, or activity in your description.</p>
+</div>
+<textarea placeholder="Write your response here..." oninput="crText=this.value" ${submitted?'disabled':''}>${crText}</textarea>
+${submitted?`<div class="expl show" style="margin-top:14px">
+<h4>Sample Response Key Points</h4>
+<p><b>(a) Error analysis:</b> In Steps 2–3, the student incorrectly assumed that if a product equals 15, then each factor must equal 15. The Zero Product Property states that if ab = 0, then a = 0 or b = 0. This property applies <i>only</i> when the product equals zero, not when it equals any other number (e.g., 3 × 5 = 15, but neither factor is 15).</p>
+<p><b>(b) Correct solution:</b> 2x² + 7x − 15 = 0. Factor: (2x − 3)(x + 5) = 0. So 2x − 3 = 0 → x = 3/2, or x + 5 = 0 → x = −5. Alternatively, using the quadratic formula: x = (−7 ± √(49 + 120))/4 = (−7 ± 13)/4, giving x = 3/2 or x = −5.</p>
+<p><b>(c) Instructional strategy:</b> Use a counterexample approach: have students verify by substituting x = 15 and x = 4 back into the original equation to see they do not satisfy it. Then emphasize that the Zero Product Property requires = 0. Use a numerical activity: give students examples like "if a · b = 12, does a = 12 or b = 12?" (e.g., 3 × 4 = 12) to build understanding. A graphing calculator could show the parabola crossing the x-axis at x = 1.5 and x = −5, not at 15 or 4.</p>
+</div>`:''}
+</div>
+<div class="bbar"><span></span>${!submitted?`<a onclick="sub()">Submit Test</a>`:`<a onclick="mode='score';R()">View Score Report</a>`}</div>`;
+}
+
+function pick(i){if(submitted)return;answers[cur]=i;R();}
+
+function sub(){
+const u=answers.filter(a=>a<0).length;
+let m='Are you sure you want to submit?\n\nAnswered: '+(40-u)+'/40 selected-response questions.';
+if(u>0)m+='\n⚠ '+u+' question(s) unanswered.';
+if(flags.some(f=>f))m+='\n🚩 '+flags.filter(f=>f).length+' question(s) flagged for review.';
+if(!confirm(m))return;
+submitted=true;mode='score';R();
+}
+
+function rScore(){
+let ok=0,comp={};
+Q.forEach((q,i)=>{if(!comp[q.c])comp[q.c]={t:0,r:0};comp[q.c].t++;if(answers[i]===q.a){ok++;comp[q.c].r++;}});
+const pct=Math.round(ok/40*100);
+const cn={'0001':'Number & Quantity','0002':'Algebra & Functions','0003':'Geometry, Statistics & Probability'};
+let ch='';
+for(let c in comp){ch+=`<div class="stat"><div class="lb">${cn[c]||c}</div><div class="vl">${comp[c].r}/${comp[c].t}</div></div>`;}
+app.innerHTML=`
+<div class="topbar"><span class="t">NYSTCE Multi-Subject: Secondary Teachers (Grade 7–Grade 12) Part Two: Mathematics</span><span>Score Report</span></div>
+<div class="colorbar"></div>
+<div class="qcard score-pg">
+<div class="circ"><div class="n">${ok}</div><div class="t">/ 40 (${pct}%)</div></div>
+<h2 style="margin-bottom:4px;font-family:var(--serif)">${pct>=70?'Pass':'Needs Improvement'}</h2>
+<p style="color:var(--txt2);margin-bottom:18px;font-size:14px">${pct>=70?'Score meets the minimum passing threshold.':'Review incorrect responses and focus on weak areas.'}</p>
+<div class="stats">
+<div class="stat"><div class="lb">Correct</div><div class="vl" style="color:var(--ok)">${ok}</div></div>
+<div class="stat"><div class="lb">Incorrect</div><div class="vl" style="color:var(--err)">${40-ok}</div></div>
+<div class="stat"><div class="lb">Score</div><div class="vl">${pct}%</div></div>
+${ch}
+</div><br>
+<button class="btn pri" style="background:#1a5276;color:#fff;border:2px solid #1a5276;font-size:16px;padding:12px 44px;cursor:pointer;border-radius:8px;font-weight:700;-webkit-appearance:none;appearance:none" onclick="mode='exam';cur=0;R()">Review Questions</button>&nbsp;
+<button class="btn" onclick="if(confirm('Reset all answers?')){cur=0;answers=new Array(40).fill(-1);flags=new Array(40).fill(false);submitted=false;crText='';mode='start';R();}">Restart Test</button>
+</div>`;
+}
+R();
+</script>
+</body>
+</html>

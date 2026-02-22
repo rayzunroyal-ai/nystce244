@@ -346,11 +346,18 @@ e:`Option A expected value: 0.65(−6) + 0.25(8) + 0.10(25) = −3.90 + 2.00 + 2
 
 const L=['A','B','C','D'];
 const app=document.getElementById('app');
-let cur=0,answers=new Array(40).fill(-1),flags=new Array(40).fill(false),submitted=false,crText='',mode='start';
+const SAVE_KEY='nystce244_progress';
+function saveProgress(){try{localStorage.setItem(SAVE_KEY,JSON.stringify({cur,answers,flags,submitted,crText,mode,ts:Date.now()}));}catch(e){}}
+function loadProgress(){try{const d=JSON.parse(localStorage.getItem(SAVE_KEY));if(d&&d.answers){cur=d.cur||0;answers=d.answers;flags=d.flags||new Array(40).fill(false);submitted=d.submitted||false;crText=d.crText||'';mode=d.mode||'start';return true;}}catch(e){}return false;}
+function clearProgress(){try{localStorage.removeItem(SAVE_KEY);}catch(e){}}
+const hasSave=loadProgress();
+if(!hasSave){var cur=0,answers=new Array(40).fill(-1),flags=new Array(40).fill(false),submitted=false,crText='',mode='start';}
 
-function R(){if(mode==='start')rStart();else if(mode==='exam')rExam();else rScore();}
+function R(){saveProgress();if(mode==='start')rStart();else if(mode==='exam')rExam();else rScore();}
 
 function rStart(){
+const hasProgress=answers.some(a=>a>=0)||crText.length>0;
+const answeredCount=answers.filter(a=>a>=0).length;
 app.innerHTML=`
 <div class="topbar"><span class="t">NYSTCE Multi-Subject: Secondary Teachers (Grade 7–Grade 12) Part Two: Mathematics</span><span>Practice Test</span></div>
 <div class="colorbar"></div>
@@ -364,9 +371,16 @@ app.innerHTML=`
 <p>• Use the numbered buttons to navigate between questions.</p>
 <p>• When you are finished, click <b>Submit</b> to see your score and detailed explanations.</p>
 <p>• A <b>Reference Materials</b> sheet with common formulas is provided during the actual exam.</p>
+<p>• <b>Your progress is automatically saved.</b> You can close the browser and resume later.</p>
 </div>
 <br>
-<button class="btn pri" style="background:#1a5276;color:#fff;border:2px solid #1a5276;font-size:16px;padding:12px 44px;cursor:pointer;border-radius:8px;font-weight:700;-webkit-appearance:none;appearance:none" onclick="mode='exam';R()" style="font-size:15px;padding:11px 40px">Start Test</button>
+${hasProgress?`<div style="background:#eaf2f8;border:1px solid #2980b9;border-radius:8px;padding:14px 18px;margin-bottom:16px;max-width:400px;margin-left:auto;margin-right:auto">
+<p style="font-size:14px;color:#1a5276;font-weight:600;margin-bottom:4px">📋 Saved Progress Found</p>
+<p style="font-size:13px;color:#666">Answered: ${answeredCount}/40 questions${crText.length>0?' + CR started':''}</p>
+</div>
+<button class="btn pri" style="background:#1a5276;color:#fff;border:2px solid #1a5276;font-size:16px;padding:12px 44px;cursor:pointer;border-radius:8px;font-weight:700;-webkit-appearance:none;appearance:none" onclick="mode='exam';R()">Resume Test</button>&nbsp;
+<button class="btn" style="font-size:14px;padding:10px 28px" onclick="if(confirm('Clear all saved progress and start fresh?')){cur=0;answers=new Array(40).fill(-1);flags=new Array(40).fill(false);submitted=false;crText='';clearProgress();mode='exam';R();}">Start New Test</button>`
+:`<button class="btn pri" style="background:#1a5276;color:#fff;border:2px solid #1a5276;font-size:16px;padding:12px 44px;cursor:pointer;border-radius:8px;font-weight:700;-webkit-appearance:none;appearance:none" onclick="mode='exam';R()">Start Test</button>`}
 </div>`;
 }
 
@@ -494,7 +508,7 @@ app.innerHTML=`
 ${ch}
 </div><br>
 <button class="btn pri" style="background:#1a5276;color:#fff;border:2px solid #1a5276;font-size:16px;padding:12px 44px;cursor:pointer;border-radius:8px;font-weight:700;-webkit-appearance:none;appearance:none" onclick="mode='exam';cur=0;R()">Review Questions</button>&nbsp;
-<button class="btn" onclick="if(confirm('Reset all answers?')){cur=0;answers=new Array(40).fill(-1);flags=new Array(40).fill(false);submitted=false;crText='';mode='start';R();}">Restart Test</button>
+<button class="btn" onclick="if(confirm('Reset all answers?')){cur=0;answers=new Array(40).fill(-1);flags=new Array(40).fill(false);submitted=false;crText='';clearProgress();mode='start';R();}">Restart Test</button>
 </div>`;
 }
 R();
